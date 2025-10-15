@@ -22,12 +22,11 @@ const useAuth = (type: string) => {
 
     const loginOrRegisterMutation = useMutation({
         mutationFn: loginOrRegisterFunc,
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success(`${type} successful`)
-
-            setTimeout(() => {
-                !isTypeLogin && router.push("/admin/login")
-            }, 2000);
+            if (isTypeLogin) {
+                setTimeout(() => router.push("/admin/login"), 2000);
+            }
         },
         onError: (error) => {
             const error_message = (error as any).response?.data?.message || 'Login failed'
@@ -37,10 +36,8 @@ const useAuth = (type: string) => {
         }
     })
 
-    const handleSubmitForm = (data: LoginProp) => {
-        console.log('data :', data);
-        loginOrRegisterMutation.mutate(data)
-    }
+    const handleSubmitForm = (data: LoginProp) => loginOrRegisterMutation.mutate(data)
+
     return { loginAdminControl, registerAdminControl, handleSubmitForm, loginOrRegisterMutation }
 }
 

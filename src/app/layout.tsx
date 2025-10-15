@@ -26,16 +26,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ReactQueryProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Toaster toastOptions={{
-            duration: 4000, position: 'bottom-center',
-          }} />
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ReactQueryProvider>
+          <Toaster
+            toastOptions={{
+              duration: 4000,
+              position: 'bottom-center',
+            }}
+          />
           {children}
-        </body>
-      </ReactQueryProvider>
+        </ReactQueryProvider>
+
+      </body>
     </html>
   );
 }

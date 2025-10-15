@@ -2,6 +2,7 @@
 
 import { AuthForm } from "@/components/employee/AuthForm";
 import { AuthLayout } from "@/components/employee/AuthLayout";
+import { GeneralAuthForm } from "@/components/GeneralAuthForm";
 import { useParams, useRouter } from "next/navigation";
 
 export default function EmployeeRegisterPage() {
@@ -23,7 +24,8 @@ export default function EmployeeRegisterPage() {
       subtext="Complete your registration using the invite link provided by your admin."
       imageUrl="https://i.postimg.cc/SK1001XQ/employee-bg.jpg"
     >
-      <AuthForm type="signup" onSubmit={handleRegister} />
+      {/* <AuthForm type="signup" onSubmit={handleRegister} /> */}
+      <GeneralAuthForm type="signup" user_type="employee" />
     </AuthLayout>
   );
 }
