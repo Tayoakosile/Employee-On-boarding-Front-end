@@ -1,24 +1,16 @@
 "use client";
 
-import { AuthForm } from "@/components/AuthForm";
-import { AuthLayout } from "@/components/AuthLayout";
+import { AuthForm } from "@/components/admin/AuthForm";
+import { AuthLayout } from "@/components/admin/AuthLayout";
 
-export default function RegisterPage() {
-  const handleRegister = (data: {
-    fullName?: string;
-    email: string;
-    password: string;
-  }) => {
-    console.log("Register Data:", data);
-  };
-
+export default function AdminRegister() {
   return (
     <AuthLayout
-      heading="Welcome Admin!"
-      subtext="Create your account to manage Employees."
+      heading="Create an Admin Account!"
+      subtext="Create your account to Invite and manage employees."
       imageUrl="https://i.postimg.cc/0yb5zS7V/istockphoto-614211848-612x612.jpg"
     >
-      <AuthForm type="register" onSubmit={handleRegister} />
+      <AuthForm type="register" />
     </AuthLayout>
   );
 }

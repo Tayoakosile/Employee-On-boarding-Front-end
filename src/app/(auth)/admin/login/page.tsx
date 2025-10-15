@@ -1,7 +1,7 @@
 "use client";
 
-import { AuthForm } from "@/components/AuthForm";
-import { AuthLayout } from "@/components/AuthLayout";
+import { AuthForm } from "@/components/employee/AuthForm";
+import { AuthLayout } from "@/components/employee/AuthLayout";
 
 export default function LoginPage() {
   const handleLogin = (data: { email: string; password: string }) => {

@@ -4,26 +4,13 @@ import { useState } from "react";
 
 interface AuthFormProps {
   type: "login" | "register";
-  onSubmit: (data: {
-    fullName?: string;
-    email: string;
-    password: string;
-  }) => void;
 }
 
-export function AuthForm({ type, onSubmit }: AuthFormProps) {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export function AuthForm({ type }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({ fullName, email, password });
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form className="space-y-6">
       {type === "register" && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -31,8 +18,6 @@ export function AuthForm({ type, onSubmit }: AuthFormProps) {
           </label>
           <input
             type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
             placeholder="Enter your full name"
             required
             className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-green-600 focus:ring-2 focus:ring-green-200"
@@ -46,11 +31,9 @@ export function AuthForm({ type, onSubmit }: AuthFormProps) {
         </label>
         <input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
           required
-          className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-green-600 focus:ring-2 focus:ring-green-200"
+          className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-200"
         />
       </div>
 
@@ -61,16 +44,14 @@ export function AuthForm({ type, onSubmit }: AuthFormProps) {
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             required
             minLength={6}
-            className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-green-600 focus:ring-2 focus:ring-green-200"
+            className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-200"
           />
           <button
             type="button"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-3 top-3 text-gray-500 text-xs"
           >
             {showPassword ? "Hide" : "Show"}
@@ -91,11 +72,13 @@ export function AuthForm({ type, onSubmit }: AuthFormProps) {
           : "Don’t have an account? "}
         <a
           href={
-            type === "register" ? "/auth/admin/login" : "/auth/admin/register"
+            type === "register"
+              ? "/auth/employee/login"
+              : "/auth/employee/register"
           }
           className="text-blue-700 font-semibold hover:underline"
         >
-          {type === "register" ? "Login" : "Register"}
+          {type === "register" ? "Login" : "Contact your admin"}
         </a>
       </p>
     </form>

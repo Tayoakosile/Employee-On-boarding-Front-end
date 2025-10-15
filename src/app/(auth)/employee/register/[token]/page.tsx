@@ -1,7 +1,7 @@
 "use client";
 
-import { AuthForm } from "@/components/AuthForm";
-import { AuthLayout } from "@/components/AuthLayout";
+import { AuthForm } from "@/components/employee/AuthForm";
+import { AuthLayout } from "@/components/employee/AuthLayout";
 import { useParams, useRouter } from "next/navigation";
 
 export default function EmployeeRegisterPage() {
