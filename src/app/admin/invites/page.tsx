@@ -110,7 +110,6 @@ export default function AdminInvitationsPage() {
               rel="noopener noreferrer"
               className="text-blue-700 underline break-all"
             >
-              {inviteLink}
             </a>
           </div>
         )}
