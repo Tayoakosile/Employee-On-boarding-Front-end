@@ -1,21 +1,30 @@
 import { BASE_API_URL } from '@/lib/utils';
 // import { useAuthStore, useUtilStore } from '@/store/store';
 import axios from 'axios';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 // import { useRouter } from 'next/router';
 
 const useApi = () => {
+
+
+  const [user_role, setUserRole] = useState('admin')
   const JOL_BASE_URL = axios.create({
     baseURL: BASE_API_URL + "/api",
     headers: {},
   });
+
+
   // Add a response interceptor to handle errors globally
   JOL_BASE_URL.interceptors.request.use((config) => {
     if (typeof window !== "undefined") {
-      const token = localStorage.getItem("auth-token");
+      const user_role = `${localStorage.getItem("sleeky_user_role") === 'undefined' ? '' : localStorage.getItem("sleeky_user_role")}`;
+      setUserRole(user_role?.toString() as string)
+      const token = `${localStorage.getItem("auth-token")}`;
+
       if (token) {
-        config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+        config.headers.Authorization = `Bearer ${token}`;
       }
     }
     return config;
@@ -25,16 +34,16 @@ const useApi = () => {
     (response) => response,
     (error) => {
 
-      // Handle errors globally
-      // console.log('error.response?.status :', error.response);
-      console.log('error.response?.status :', error.response?.status);
       if (error.response?.status === 401) {
         toast.error('Unauthorized access. Please log in again.', {
           position: 'bottom-center'
         });
-        window.location.href = '/login'
-        localStorage.setItem("auth-token", "")
-        console.error('Unauthorized access - redirecting to login');
+        setTimeout(() => {
+
+          window.location.href = `/${user_role}/login`
+          // localStorage.setItem("auth-token", "")
+          console.error('Unauthorized access - redirecting to login');
+        }, 1000);
         return;
       }
       if (error.response?.status === 429) {

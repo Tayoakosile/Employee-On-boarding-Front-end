@@ -32,7 +32,7 @@ export function AuthForm({ type }: AuthFormProps) {
       )}
 
       <FormInput control={loginAdminControl.control} name="email" title="Email" />
-      <FormInput control={loginAdminControl.control} name="password" title="Password" />
+      <FormInput control={loginAdminControl.control} name="password" type="password" title="Password" />
       <Button loading={loginOrRegisterMutation.isPending}>
         {type === "signup" ? "Register" : "Login"}
       </Button>
@@ -44,8 +44,8 @@ export function AuthForm({ type }: AuthFormProps) {
         <a
           href={
             type === "signup"
-              ? "/auth/employee/login"
-              : "/auth/employee/signup"
+              ? "/employee/login"
+              : "/employee/signup"
           }
           className="text-blue-700 font-semibold hover:underline"
         >

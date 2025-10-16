@@ -12,7 +12,7 @@ interface AuthFormProps {
 }
 
 export function GeneralAuthForm({ type, user_type = "admin" }: AuthFormProps) {
-    const { loginAdminControl, handleSubmitForm, loginOrRegisterMutation, registerAdminControl } = useAuth(type)
+    const { loginAdminControl, handleSubmitForm, loginOrRegisterMutation, registerAdminControl } = useAuth(type,user_type)
 
     const isTypeLogin = type === 'login'
     return (
@@ -33,8 +33,8 @@ export function GeneralAuthForm({ type, user_type = "admin" }: AuthFormProps) {
                 <a
                     href={
                         type === "signup"
-                            ? "/auth/employee/login"
-                            : "/auth/employee/signup"
+                            ? "/employee/login"
+                            : "/employee/signup"
                     }
                     className="text-blue-700 font-semibold hover:underline"
                 >

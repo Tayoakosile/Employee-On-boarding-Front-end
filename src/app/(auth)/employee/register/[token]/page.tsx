@@ -1,22 +1,26 @@
 "use client";
 
-import { AuthForm } from "@/components/employee/AuthForm";
 import { AuthLayout } from "@/components/employee/AuthLayout";
 import { GeneralAuthForm } from "@/components/GeneralAuthForm";
-import { useParams, useRouter } from "next/navigation";
+import Spinner from "@/components/reusables/LoadingSpinner";
+import useGetInviteCode from "@/hooks/useGetInviteCode";
 
 export default function EmployeeRegisterPage() {
-  const { token } = useParams();
-  const router = useRouter();
+  const { invite, isLoading, error, isFetching, isError } = useGetInviteCode()
 
-  const handleRegister = (data: {
-    fullName?: string;
-    email: string;
-    password: string;
-  }) => {
-    console.log("Employee Registration:", { ...data, token });
-    router.push("/employee/login");
-  };
+  if (isLoading) {
+    return <div><Spinner /></div>;
+  }
+  if (isError) {
+    return <div className="min-h-dvh flex justify-center items-center">
+      <div className="text-center">
+        <h2 className="text-2xl font-semibold mb-4">Invalid or Expired Link</h2>
+        <p className="mb-4">The invite link you used is either invalid or has expired. Please contact your administrator for a new link.</p>
+      </div>
+    </div>
+  }
+
+
 
   return (
     <AuthLayout
@@ -24,7 +28,9 @@ export default function EmployeeRegisterPage() {
       subtext="Complete your registration using the invite link provided by your admin."
       imageUrl="https://i.postimg.cc/SK1001XQ/employee-bg.jpg"
     >
-      {/* <AuthForm type="signup" onSubmit={handleRegister} /> */}
+
+      <div className="my-8">Valid Invite Code: {invite?.invite?.token}</div>
+
       <GeneralAuthForm type="signup" user_type="employee" />
     </AuthLayout>
   );
