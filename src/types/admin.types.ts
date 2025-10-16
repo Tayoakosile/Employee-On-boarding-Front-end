@@ -1,4 +1,4 @@
-import { Interface } from "readline";
+// import { Interface } from "readline";
 
 export interface User {
   id: string;
@@ -7,4 +7,5 @@ export interface User {
   role: "admin" | "employee";
   createdAt: string;
   updatedAt: string;
+  used?: boolean;
 }

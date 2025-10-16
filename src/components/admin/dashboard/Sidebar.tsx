@@ -2,6 +2,7 @@
 
 import { X, Home, Users, ClipboardList } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface SidebarProps {
   open: boolean;
@@ -9,7 +10,14 @@ interface SidebarProps {
   role: "admin" | "employee";
 }
 
-export function Sidebar({ open, onClose }: SidebarProps) {
+export function Sidebar({ open, onClose, role }: SidebarProps) {
+  const pathname = usePathname();
+
+  const linkClasses = (path: string) =>
+    `flex items-center space-x-3 p-2 rounded-md transition ${
+      pathname === path ? "bg-blue-600" : "hover:bg-blue-600"
+    }`;
+
   return (
     <>
       {open && (
@@ -25,7 +33,9 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         } transition-transform duration-300 ease-in-out lg:translate-x-0`}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-blue-600">
-          <h2 className="text-xl font-semibold">Sleeky Admin</h2>
+          <h2 className="text-xl font-semibold">
+            {role === "admin" ? "Sleeky Admin" : "Sleeky Employee"}
+          </h2>
           <button className="lg:hidden" onClick={onClose}>
             <X className="w-5 h-5" />
           </button>
@@ -34,7 +44,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         <nav className="p-6 space-y-4">
           <Link
             href="/admin/dashboard"
-            className="flex items-center space-x-3 p-2 rounded-md hover:bg-blue-600 transition"
+            className={linkClasses("/admin/dashboard")}
           >
             <Home className="w-5 h-5" />
             <span>Dashboard</span>
@@ -42,7 +52,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
           <Link
             href="/admin/employees"
-            className="flex items-center space-x-3 p-2 rounded-md hover:bg-blue-600 transition"
+            className={linkClasses("/admin/employees")}
           >
             <Users className="w-5 h-5" />
             <span>Employees</span>
@@ -50,7 +60,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
           <Link
             href="/admin/invitations"
-            className="flex items-center space-x-3 p-2 rounded-md hover:bg-blue-600 transition"
+            className={linkClasses("/admin/invitations")}
           >
             <ClipboardList className="w-5 h-5" />
             <span>Invitations</span>
