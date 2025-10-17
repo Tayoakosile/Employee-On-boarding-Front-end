@@ -42,7 +42,6 @@ const useAuth = (type: string, user_type?: string) => {
             if (isTypeLogin) {
 
                 if (isLoggedInUserAnEmployee) {
-
                     setTimeout(() => router.push("/employee/dashboard"),
                         2000);
                     return;
@@ -55,12 +54,23 @@ const useAuth = (type: string, user_type?: string) => {
         },
         onError: (error: { response: { data: { message: string } } }) => {
             const error_message = (error).response?.data?.message || 'Login failed'
-            isTypeLogin ? loginAdminControl.setError('email', { message: error_message }) : registerAdminControl.setError('email', { message: error_message })
             toast.error(error_message)
+            if (isTypeLogin) {
+                loginAdminControl.setError('email', { message: error_message })
+                return;
+            }
+            registerAdminControl.setError('email', { message: error_message })
         }
     })
 
-    const handleSubmitForm = (data: LoginProp) => loginOrRegisterMutation.mutate(data)
+    console.log('registerAdminControl.formState.errors :', registerAdminControl.formState.errors, loginAdminControl.formState.errors);
+
+
+    const handleSubmitForm = (data: LoginProp) => {
+
+        loginOrRegisterMutation.mutate(data)
+
+    }
 
     return { loginAdminControl, registerAdminControl, handleSubmitForm, loginOrRegisterMutation }
 }

@@ -28,9 +28,7 @@ export default function EmployeeRegisterPage() {
       subtext="Complete your registration using the invite link provided by your admin."
       imageUrl="https://i.postimg.cc/SK1001XQ/employee-bg.jpg"
     >
-
       <div className="my-8">Valid Invite Code: {invite?.invite?.token}</div>
-
       <GeneralAuthForm type="signup" user_type="employee" />
     </AuthLayout>
   );

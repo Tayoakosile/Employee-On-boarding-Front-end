@@ -4,8 +4,6 @@ import useAuth from "@/hooks/useAuth";
 import FormInput from "./FormInput";
 import Button from "./reusables/Button";
 
-
-
 interface AuthFormProps {
     type: "login" | "signup";
     user_type?: "admin" | "employee"
@@ -13,8 +11,9 @@ interface AuthFormProps {
 
 export function GeneralAuthForm({ type, user_type = "admin" }: AuthFormProps) {
     const { loginAdminControl, handleSubmitForm, loginOrRegisterMutation, registerAdminControl } = useAuth(type,user_type)
-
     const isTypeLogin = type === 'login'
+    console.log('isTypeLogin :', isTypeLogin);
+
     return (
         <form className="space-y-6" onSubmit={isTypeLogin ? loginAdminControl.handleSubmit(handleSubmitForm) : registerAdminControl.handleSubmit(handleSubmitForm)}>
             {type === "signup" && (
@@ -22,7 +21,7 @@ export function GeneralAuthForm({ type, user_type = "admin" }: AuthFormProps) {
             )}
             <FormInput control={isTypeLogin ? loginAdminControl.control : registerAdminControl.control} name="email" title="Email" />
             <FormInput control={isTypeLogin ? loginAdminControl.control : registerAdminControl.control} name="password" title="Password" />
-            <Button loading={loginOrRegisterMutation.isPending}>
+            <Button type="submit" loading={loginOrRegisterMutation.isPending}>
                 {type === "signup" ? "Register" : "Login"}
             </Button>
 
@@ -41,7 +40,6 @@ export function GeneralAuthForm({ type, user_type = "admin" }: AuthFormProps) {
                     {type === "signup" ? "Login" : "Contact your admin"}
                 </a>
             </p>
-
         </form>
     );
 
