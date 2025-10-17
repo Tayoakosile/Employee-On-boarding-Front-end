@@ -19,7 +19,7 @@ const useApi = () => {
   // Add a response interceptor to handle errors globally
   JOL_BASE_URL.interceptors.request.use((config) => {
     if (typeof window !== "undefined") {
-      const user_role = `${localStorage.getItem("sleeky_user_role") === 'undefined' ? '' : localStorage.getItem("sleeky_user_role")}`;
+      const user_role = `${localStorage.getItem("sleeky_user_role") === 'undefined' ? '' : localStorage.getItem("sleeky_user_role") === "null" ? "" : localStorage.getItem("sleeky_user_role")}`;
       setUserRole(user_role?.toString() as string)
       const token = `${localStorage.getItem("auth-token")}`;
 

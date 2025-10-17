@@ -10,8 +10,8 @@
 //   const headers = [
 //     { name: "Date Created", value: "date_joined" },
 
-//     { name: "used", value: "Used" },
-//   ];
+//     { name: "used", value: "Link" },
+//   ];link
 //   const { fetchInvitesQuery } = useAdmin();
 //   console.log("fetchInvites :", fetchInvitesQuery.data);
 
@@ -49,16 +49,20 @@ import useAdmin from "@/hooks/useAdmin";
 import { User } from "@/types/admin.types";
 import dayjs from "dayjs";
 import { Layout } from "@/components/admin/dashboard/layout";
+import { useMutation } from "@tanstack/react-query";
+import useApi from "@/hooks/useApi";
+import toast from "react-hot-toast";
 
 export default function AdminInvitationsPage() {
-  const [loading, setLoading] = useState(false);
-  const [inviteLink, setInviteLink] = useState("");
+  const { JOL_BASE_URL } = useApi()
 
-  const { fetchInvitesQuery, generateInviteMutation } = useAdmin();
+
+  const { fetchInvitesQuery, } = useAdmin();
 
   const headers = [
     { name: "Date Created", value: "date_joined" },
     { name: "Used", value: "used" },
+    { name: "Link", value: "link" },
   ];
 
   const invites =
@@ -66,20 +70,20 @@ export default function AdminInvitationsPage() {
       ...invite,
       date_joined: dayjs(invite.createdAt).format("DD-MM-YYYY"),
       used: invite.used ? "Yes" : "No",
+      link: `${window.location.origin}/employee/register/${invite?.token}`
     })) || [];
 
-  const handleGenerateInvite = async () => {
-    setLoading(true);
-    try {
-      const response = await generateInviteMutation.mutateAsync();
-      setInviteLink(response?.inviteLink);
-    } catch (error) {
-      console.error(error);
-      alert("Failed to generate invite link");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleGenerateNewInvite =
+    useMutation({
+      mutationFn: async () => {
+        const { data } = await JOL_BASE_URL.post(`/invites`)
+        return data
+      }, onSuccess() {
+        toast.success("Invite link generated successfully")
+      }
+
+    })
+
 
   if (fetchInvitesQuery.isLoading) {
     return (
@@ -88,6 +92,7 @@ export default function AdminInvitationsPage() {
       </div>
     );
   }
+  const inviteLink = handleGenerateNewInvite.data?.token ? `${window.location.origin}/employee/register/${handleGenerateNewInvite.data?.token}` : null
 
   return (
     <Layout>
@@ -95,7 +100,7 @@ export default function AdminInvitationsPage() {
         {/* Page Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-800">Invitations</h1>
-          <Button loading={loading} onClick={handleGenerateInvite}>
+          <Button  loading={handleGenerateNewInvite.isPending} onClick={handleGenerateNewInvite.mutate}>
             Generate Invite Link
           </Button>
         </div>
@@ -109,7 +114,7 @@ export default function AdminInvitationsPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-700 underline break-all"
-            >
+            >{inviteLink}
             </a>
           </div>
         )}
